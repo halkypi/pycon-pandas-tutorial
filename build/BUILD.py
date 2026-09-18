@@ -4,8 +4,8 @@ import csv
 import gzip
 import os
 import re
-import sys
 from datetime import datetime
+from contextlib import ExitStack
 
 split_on_tabs = re.compile(b'\t+').split
 
@@ -13,6 +13,10 @@ BAD_GENRES = {b'Adult', b'Documentary', b'Short', b'Horror', b'Reality-TV',
               b'Talk-Show', b'Game-Show', b'Reality-tv'}
 
 def main():
+    with ExitStack() as stack:
+        build(stack)
+
+def build(stack):
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
     if not os.path.isdir('../data'):
         os.makedirs('../data')
@@ -22,7 +26,7 @@ def main():
     titles = set()
     uninteresting_titles = set()
 
-    lines = iter(gzip.open('genres.list.gz'))
+    lines = iter(stack.enter_context(gzip.open('genres.list.gz')))
     line = next(lines)
     while line != b'8: THE GENRES LIST\n':
         line = next(lines)
@@ -57,7 +61,7 @@ def main():
 
     print('Writing "titles.csv"')
 
-    with open('../data/titles.csv', 'w') as f:
+    with open('../data/titles.csv', 'w', encoding='utf-8', newline='') as f:
         output = csv.writer(f)
         output.writerow(('title', 'year'))
         for raw_title in interesting_titles:
@@ -67,13 +71,13 @@ def main():
     print('Finished writing "titles.csv"')
     print('Reading release dates from "release-dates.list.gz"')
 
-    lines = iter(gzip.open('release-dates.list.gz'))
+    lines = iter(stack.enter_context(gzip.open('release-dates.list.gz')))
     line = next(lines)
     while line != b'RELEASE DATES LIST\n':
         line = next(lines)
     assert next(lines) == b'==================\n'
 
-    output = csv.writer(open('../data/release_dates.csv', 'w'))
+    output = csv.writer(stack.enter_context(open('../data/release_dates.csv', 'w', encoding='utf-8', newline='')))
     output.writerow(('title', 'year', 'country', 'date'))
 
     for line in lines:
@@ -104,10 +108,7 @@ def main():
 
     print('Finished writing "release_dates.csv"')
 
-    if sys.version_info < (3, 0):
-        output = csv.writer(open('../data/cast.csv', 'w'))
-    else:
-        output = csv.writer(open('../data/cast.csv', 'w', encoding='utf-8'))
+    output = csv.writer(stack.enter_context(open('../data/cast.csv', 'w', encoding='utf-8', newline='')))
     output.writerow(('title', 'year', 'name', 'type', 'character', 'n'))
 
     for role_type, filename in (
@@ -115,7 +116,7 @@ def main():
             ('actress', 'actresses.list.gz'),
             ):
         print('Reading {0!r}'.format(filename))
-        lines = iter(gzip.open(filename))
+        lines = iter(stack.enter_context(gzip.open(filename)))
 
         line = next(lines)
         while (b'Name' not in line) or (b'Titles' not in line):

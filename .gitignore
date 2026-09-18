@@ -7,3 +7,5 @@ build/*.csv
 data/*.csv
 *.html
 *.png
+.venv/
+build/*.part

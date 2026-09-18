@@ -7,7 +7,7 @@ We have Internet!  But, I have USB keys too.
 Format: lesson, exercises, solutions.
 
 Open Exercise-1
-Point out .from_csv functions
+Point out pd.read_csv functions
 
 VIEWING
 
@@ -28,7 +28,7 @@ h.year > 1960
 h[h.year > 1960]
 h[h.year > 1960 & h.year < 1970]
 h[(h.year > 1960) & (h.year < 1970)]
-t.year // 10 * 10
+h.year // 10 * 10
 h[h.title == '...']
 
 SORTING
@@ -41,6 +41,8 @@ Session 2
 =========
 
 STRING METHODS
+
+h = titles.title
 
 h.str.len()
 h.str.startswith(s)
@@ -55,7 +57,7 @@ titles.year.value_counts().sort_index().plot()
 titles.year.value_counts().sort_index().plot(kind='bar')
 
 c = cast
-c = c[c.character == 'Kermit the Frog]
+c = c[c.character == 'Kermit the Frog']
 c.plot(x='year', y='n', kind='scatter')
 
 COLUMNS
@@ -76,17 +78,18 @@ Session 3
 
 INDEXES - SPEED
 
-%%time cast[cast.title == 'Sleuth']
+%time cast[cast.title == 'Sleuth']
 c = cast.set_index(['title'])
-%%time c.loc['Sleuth']
+%time c.loc['Sleuth']
 c = cast.set_index(['title']).sort_index()
-%%time c.loc['Sleuth']
+%time c.loc['Sleuth']
 
-c = cast.set_index(['title', 'year']).sort_index()
+# Missing labels first keep MultiIndex range slices fully sorted.
+c = cast.set_index(['title', 'year']).sort_index(na_position='first')
 c.loc['Sleuth']
-c.loc['Sleuth',1996]
-c.loc[('Sleuth',1996),'character']
-c.loc[('Sleuth',1996),('character','n')]
+c.loc['Sleuth',1972]
+c.loc[('Sleuth',1972),'character']
+c.loc[('Sleuth',1972),['character','n']]
 
 .reset_index('title')
 .reset_index('year')
@@ -200,7 +203,7 @@ c = c[c.name_y != 'Cary Grant']
 c = c[['title', 'year', 'name_x', 'name_y']]
 c
 
-c.groupby('name_y').size().order(ascending=False)
+c.groupby('name_y').size().sort_values(ascending=False)
 
 reindex? or what? yeah.
 .dropna()
@@ -211,14 +214,14 @@ Pivot
 r = release_dates
 r = r[r.title.str.startswith('Star Wars: Episode')]
 r = r[r.country.str.startswith('U')]
-r.pivot('title', 'country', 'date')
+r.pivot(index='title', columns='country', values='date')
 
 which is the same as
 
 r.set_index(['title', 'country'])[['date']].unstack()
 
 .rename(columns={...})
-.concat(df)
+pd.concat([df, df2])
 
 Thoughts for later
 ==================

@@ -4,7 +4,7 @@
                                 Welcome!
 
 
-   1. Install Pandas and the IPython Notebook
+   1. Install Pandas and the Jupyter Notebook
 
       The Anaconda distribution includes Pandas built-in:
       https://www.anaconda.com/download/
@@ -15,23 +15,22 @@
       https://github.com/brandon-rhodes/pycon-pandas-tutorial/releases
 
 
-   3. Start the IPython Notebook and visit the "pandas-tutorial"
+   3. Start the Jupyter Notebook and visit the "pandas-tutorial"
       folder from inside the .zip
 
 
 
   len(df)       series + value    	df[df.c == value]
   df.head()     series + series2  	df[(df.c >= value) & (df.d < value)]
-  df.tail()     series.notnull()  	df[(df.c < value) | (df.d != value)]
-  df.COLUMN     series.isnull()   	df.sort_values('column')
+  df.tail()     series.notna()  	df[(df.c < value) | (df.d != value)]
+  df.COLUMN     series.isna()   	df.sort_values('column')
   df['COLUMN']  series.sort_index()	df.sort_values(['column1', 'column2'])
 
 
 
 
-                        import sys
-                        reload(sys)
-                        sys.setdefaultencoding('utf-8')
+                        import pandas as pd
+                        pd.read_csv('data/titles.csv')
 
 
 
@@ -45,8 +44,8 @@
 
   len(df)       series + value    	df[df.c == value]
   df.head()     series + series2  	df[(df.c >= value) & (df.d < value)]
-  df.tail()     series.notnull()  	df[(df.c < value) | (df.d != value)]
-  df.COLUMN     series.isnull()   	df.sort_values('column')
+  df.tail()     series.notna()  	df[(df.c < value) | (df.d != value)]
+  df.COLUMN     series.isna()   	df.sort_values('column')
   df['COLUMN']  series.sort_index()	df.sort_values(['column1', 'column2'])
 
   s.str.len()        s.value_counts()
@@ -54,17 +53,16 @@
   s.str.startswith() s.plot(...)          df.plot(x='a', y='b', kind='bar')
 
 
-                        import sys
-                        reload(sys)
-                        sys.setdefaultencoding('utf-8')
+                        import pandas as pd
+                        pd.read_csv('data/titles.csv')
 
 
 
 
   len(df)       series + value    	df[df.c == value]
   df.head()     series + series2  	df[(df.c >= value) & (df.d < value)]
-  df.tail()     series.notnull()  	df[(df.c < value) | (df.d != value)]
-  df.COLUMN     series.isnull()   	df.sort_values('column')
+  df.tail()     series.notna()  	df[(df.c < value) | (df.d != value)]
+  df.COLUMN     series.isna()   	df.sort_values('column')
   df['COLUMN']  series.sort_index()	df.sort_values(['column1', 'column2'])
 
   s.str.len()        s.value_counts()
@@ -73,7 +71,7 @@
 
   df.set_index('a').sort_index()          df.loc['value']
   df.set_index(['a', 'b']).sort_index()   df.loc[('v','u')]
-  df.groupby('column')                    .size() .mean() .min() .max()
+  df.groupby('column')                    .size() .mean(numeric_only=True) .min() .max()
   df.groupby(['column1', 'column2'])      .agg(['min', 'max'])
 
 
@@ -87,8 +85,8 @@
 
   len(df)       series + value    	df[df.c == value]
   df.head()     series + series2  	df[(df.c >= value) & (df.d < value)]
-  df.tail()     series.notnull()  	df[(df.c < value) | (df.d != value)]
-  df.COLUMN     series.isnull()   	df.sort_values('column')
+  df.tail()     series.notna()  	df[(df.c < value) | (df.d != value)]
+  df.COLUMN     series.isna()   	df.sort_values('column')
   df['COLUMN']  series.sort_index()	df.sort_values(['column1', 'column2'])
 
   s.str.len()        s.value_counts()
@@ -97,7 +95,7 @@
 
   df.set_index('a').sort_index()        df.loc['value']
   df.set_index(['a', 'b']).sort_index() df.loc[('v','u')]
-  df.groupby('column')                  .size() .mean() .min() .max()
+  df.groupby('column')                  .size() .mean(numeric_only=True) .min() .max()
   df.groupby(['column1', 'column2'])    .agg(['min', 'max'])
 
   df.unstack()
@@ -110,8 +108,8 @@
 
   len(df)       series + value    	df[df.c == value]
   df.head()     series + series2  	df[(df.c >= value) & (df.d < value)]
-  df.tail()     series.notnull()  	df[(df.c < value) | (df.d != value)]
-  df.COLUMN     series.isnull()   	df.sort_values('column')
+  df.tail()     series.notna()  	df[(df.c < value) | (df.d != value)]
+  df.COLUMN     series.isna()   	df.sort_values('column')
   df['COLUMN']  series.sort_index()	df.sort_values(['column1', 'column2'])
 
   s.str.len()        s.value_counts()
@@ -120,7 +118,7 @@
 
   df.set_index('a').sort_index()        df.loc['value']
   df.set_index(['a', 'b']).sort_index() df.loc[('v','u')]
-  df.groupby('column')                  .size() .mean() .min() .max()
+  df.groupby('column')                  .size() .mean(numeric_only=True) .min() .max()
   df.groupby(['column1', 'column2'])    .agg(['min', 'max'])
 
   df.unstack()      s.dt.year
@@ -133,8 +131,8 @@
 
   len(df)       series + value    	df[df.c == value]
   df.head()     series + series2  	df[(df.c >= value) & (df.d < value)]
-  df.tail()     series.notnull()  	df[(df.c < value) | (df.d != value)]
-  df.COLUMN     series.isnull()   	df.sort_values('column')
+  df.tail()     series.notna()  	df[(df.c < value) | (df.d != value)]
+  df.COLUMN     series.isna()   	df.sort_values('column')
   df['COLUMN']  series.sort_index()	df.sort_values(['column1', 'column2'])
 
   s.str.len()        s.value_counts()
@@ -143,7 +141,7 @@
 
   df.set_index('a').sort_index()        df.loc['value']
   df.set_index(['a', 'b']).sort_index() df.loc[('v','u')]
-  df.groupby('column')                  .size() .mean() .min() .max()
+  df.groupby('column')                  .size() .mean(numeric_only=True) .min() .max()
   df.groupby(['column1', 'column2'])    .agg(['min', 'max'])
 
   df.unstack()      s.dt.year       df.merge(df2, how='outer', ...)

@@ -20,22 +20,23 @@ needed to download and set up the data set that we used.
 
 ## Quick Start
 
-If you have both `conda` and `git` on your system (otherwise, read the
+If you have both `uv` and `git` on your system (otherwise, read the
 next section for more detailed instructions):
 
-    $ conda install --yes jupyter matplotlib pandas
-    $ git clone https://github.com/brandon-rhodes/pycon-pandas-tutorial.git
+    $ git clone https://github.com/halkypi/pycon-pandas-tutorial.git
     $ cd pycon-pandas-tutorial
+    $ bash requirements.sh
+    $ source .venv/bin/activate
     $ build/BUILD.sh
     $ jupyter notebook
 
 ## Detailed Instructions
 
-You will need Pandas, the IPython Notebook, and Matplotlib installed
+You will need Pandas, Jupyter Notebook, and Matplotlib installed
 before you can successfully run the tutorial notebooks.  The [Anaconda
 Distribution](https://www.anaconda.com/download/) is a great way to get up
 and running quickly without having to install them each separately —
-running the `conda` command shown above will install all three.
+or use the `uv` setup above, tested with Python 3.13 and pandas 3.0.6.
 
 Note that having `git` is not necessary for getting the materials.
 Simply click the “Download ZIP” button over on the right-hand side of
@@ -48,33 +49,48 @@ Once you have unpacked the ZIP file, download the following four
 [IMDB](https://www.imdb.com/) data files and place them in the
 tutorial’s `build` directory:
 
-* ftp://ftp.fu-berlin.de/misc/movies/database/frozendata/actors.list.gz
-* ftp://ftp.fu-berlin.de/misc/movies/database/frozendata/actresses.list.gz
-* ftp://ftp.fu-berlin.de/misc/movies/database/frozendata/genres.list.gz
-* ftp://ftp.fu-berlin.de/misc/movies/database/frozendata/release-dates.list.gz
+* https://ftp.fu-berlin.de/pub/misc/movies/database/frozendata/actors.list.gz
+* https://ftp.fu-berlin.de/pub/misc/movies/database/frozendata/actresses.list.gz
+* https://ftp.fu-berlin.de/pub/misc/movies/database/frozendata/genres.list.gz
+* https://ftp.fu-berlin.de/pub/misc/movies/database/frozendata/release-dates.list.gz
 
 If the above links don’t work for you, try these alternate sources of the same files:
 
-* ftp://ftp.funet.fi/pub/mirrors/ftp.imdb.com/pub/frozendata/actors.list.gz
-* ftp://ftp.funet.fi/pub/mirrors/ftp.imdb.com/pub/frozendata/actresses.list.gz
-* ftp://ftp.funet.fi/pub/mirrors/ftp.imdb.com/pub/frozendata/genres.list.gz
-* ftp://ftp.funet.fi/pub/mirrors/ftp.imdb.com/pub/frozendata/release-dates.list.gz
+* https://www.nic.funet.fi/pub/mirrors/ftp.imdb.com/pub/frozendata/actors.list.gz
+* https://www.nic.funet.fi/pub/mirrors/ftp.imdb.com/pub/frozendata/actresses.list.gz
+* https://www.nic.funet.fi/pub/mirrors/ftp.imdb.com/pub/frozendata/genres.list.gz
+* https://www.nic.funet.fi/pub/mirrors/ftp.imdb.com/pub/frozendata/release-dates.list.gz
 
 To convert these into the CSV files that the tutorial needs, run the
-`BUILD.py` script with either Python 2 or Python 3.  It will create the
+`BUILD.py` script with Python 3.  It will create the
 three CSV files in the `data` directory that you need to run all of the
 tutorial examples.  It should take about 5 minutes to run on a fast
 modern machine:
 
     $ python build/BUILD.py
 
-You can then start up the IPython Notebook and start looking at the
+You can then start up Jupyter Notebook and start looking at the
 notebooks:
 
-    $ ipython notebook
+    $ jupyter notebook
 
 I hope that the recording and the exercises in this repository prove
 useful if you are interested in learning more about Python and its data
 analysis capabilities!
 
 — [Brandon Rhodes](http://rhodesmill.org/brandon/)
+
+## Maintaining this fork
+
+The numbered solution notebooks are the teaching sources for the numbered
+exercises. `python build/split.py` regenerates the exercises from those solutions;
+run it only when intentionally updating exercises. `All.ipynb` is an older
+exploratory collection, not a generated concatenation of the numbered lessons.
+`images/Diagrams.ipynb` is auxiliary material; run it from `images/`. Its unsorted
+MultiIndex slice deliberately raises an error before the sorted example.
+
+The frozen IMDb files preserve the original tutorial dataset and filters; counts
+can differ from the 2015 recording. The downloads total roughly 640 MB compressed.
+The diagram Makefile additionally requires Graphviz, wkhtmltoimage, and ImageMagick.
+`images/loop.sh` used an instructor-local `,make-loop` helper; use `make -C images`
+for a one-shot build instead. The original pre-course email is historical.

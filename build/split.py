@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 import glob
 import json
@@ -27,8 +27,8 @@ def question_cell(text):
 
 def main():
     session_cells = {n: [] for n in range(1, 6+1)}
-    f = open(os.path.dirname(os.path.abspath(__file__)) + '/../All.ipynb')
-    j = json.load(f)
+    with open(os.path.dirname(os.path.abspath(__file__)) + '/../All.ipynb') as f:
+        j = json.load(f)
     cells = j['cells']
     for cell in cells:
         source = u''.join(cell['source'])
@@ -38,11 +38,11 @@ def main():
         n = int(m.group(1))
         session_cells[n].append(cell)
     for n, cells in sorted(session_cells.items()):
-        print 'Session {}: {} cells'.format(n, len(cells))
+        print('Session {}: {} cells'.format(n, len(cells)))
 
 def convert(filename):
-    f = open(filename)
-    j = json.load(f)
+    with open(filename) as f:
+        j = json.load(f)
     j['cells'] = list(filter_cells(filename, j['cells']))
     assert 'Solutions' in filename
     with open(filename.replace('Solutions', 'Exercises'), 'w') as f:
@@ -64,6 +64,9 @@ def filter_cells(filename, cells):
 
         if not source.startswith('# '):
             continue
+        # Solution commentary is not a new learner exercise.
+        if source.startswith(('# First try:', '# Second try:')):
+            continue
 
         question = []
 
@@ -80,7 +83,7 @@ def filter_cells(filename, cells):
         yield blank_code_cell()
 
         n += 1
-    print '{:6}   {}'.format(n, filename)
+    print('{:6}   {}'.format(n, filename))
 
 def main2():
     for filename in sorted(glob.glob('Solutions-*.ipynb')):
